@@ -15,18 +15,17 @@ app.use(apiRouter)
 app.use(getAllStatusesMiddleware)
 
 app.get('/create', async (req, res)=>{
-    res.render('crupdate', {actionType:'Create', title:'Create task', statuss: req.statuses})
+    res.render('create', {title:'Create task', statuss: req.statuses})
 })
 
 app.get('/update/:id', async (req, res)=>{
     let model = await (await fetch(`${req.protocol}://${req.get('host')}/api/getUpdateModel/${req.params.id}`)).json()
-    res.render('crupdate', {actionType:'Update', title:'Update task', statuss: req.statuses, model: model})
+    res.render('update', {title:'Update task', statuss: req.statuses, model: model})
 })
 
 app.get('/:taskStatus?', async (req, res)=>{
     let taskList = []
     let status = (typeof req.params.taskStatus === 'undefined') ? req.statuses[0] : req.params.taskStatus
-    //if (!(req.statuses.includes(status))) return
     taskList = await (await fetch(`${req.protocol}://${req.get('host')}/api/getAllTasks/${status}`)).json()
     res.render('index', {title:'Task List', taskList: taskList, statuss: req.statuses, currentStatus: status})
 })
@@ -45,6 +44,19 @@ app.post('/create', async(req, res) => {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({text: taskText, status: taskStatus, date: (new Date(taskDate).toLocaleDateString())})
+    });
+    res.writeHead(302, {
+        'Location': `${req.protocol}://${req.get('host')}/`
+    });
+    res.end();
+})
+
+app.post('/update', async(req, res) => {
+    const {taskId, taskText, taskStatus, taskDate} = req.body
+    await fetch(`${req.protocol}://${req.get('host')}/api/updateTask`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({id: taskId, text: taskText, status: taskStatus, date: (new Date(taskDate).toLocaleDateString())})
     });
     res.writeHead(302, {
         'Location': `${req.protocol}://${req.get('host')}/`

@@ -3,8 +3,8 @@
 <%- include('./partials/head'); %>
 <body>
     <%- include('./partials/navbar'); %>
-    <h1 class="m-4"><%= actionType %> Task</h1>
-    <form id="taskForm" class="m-4" method="post" action="/<%= actionType %>">
+    <h1 class="m-4">Create Task</h1>
+    <form id="taskForm" class="m-4" method="post" action="/create">
         <div class="mb-3">
             <label for="taskText" class="form-label">Task text</label>
             <textarea class="form-control" id="taskText" name="taskText" rows="3"></textarea>
@@ -13,11 +13,11 @@
         <div class="mb-3">
             <label for="taskStatus" class="form-label">Status</label>
             <% if(statuss.length > 0) { %>
-            <select class="form-select" id="taskStatus" name="taskStatus">
-                <% for(let i = 0; i < statuss.length; i++) { %>
-                    <option <% if(i===0) { %> selected <% } %> value="<%= statuss[i] %>"><%= statuss[i] %></option>
-                <% } %>
-            </select>
+                <select class="form-select" id="taskStatus" name="taskStatus">
+                    <% for(let i = 0; i < statuss.length; i++) { %>
+                        <option <% if(i===0) { %> selected <% } %> value="<%= statuss[i] %>"><%= statuss[i] %></option>
+                    <% } %>
+                </select>
             <% } %>
         </div>
         <div class="mb-3">
@@ -25,7 +25,7 @@
             <input class="form-control" id="taskDate" name="taskDate" type="date"/>
             <label for="taskDate" id="taskDateError" class="text-danger text-bold d-none">Input date!</label>
         </div>
-        <button id="submitForm" type="submit" class="btn btn-success"><%= actionType %></button>
+        <button id="submitForm" type="submit" class="btn btn-success">Create</button>
     </form>
 </body>
 

@@ -17,8 +17,7 @@ export const getAllTasks = (req, res) => {
             console.log(err)
             return res.status(500).json([])
         }
-        return res.status(200).json(rows);
-
+        return res.status(200).json(rows)
     })
 }
 
@@ -42,7 +41,8 @@ export const createTask = (req, res) => {
 }
 
 export const updateTask = (req, res) => {
-    db.run(`UPDATE ${TABLE_NAME} SET text=?, status=?, completionDate=? WHERE id=?`, [req.params.id], (err)=>{
+    const {id, text, status, date} = req.body
+    db.run(`UPDATE ${TABLE_NAME} SET text=?, status=?, completionDate=? WHERE id=?`, [text, status, date, id], (err)=>{
         if(err) throw err
     })
     res.end()
